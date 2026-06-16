@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aarnav Singh — Security Research Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:      #0C0C0E;
+    --panel:   #131316;
+    --panel-2: #1A1A1E;
+    --rule:    rgba(232,226,214,0.14);
+    --rule-2:  rgba(232,226,214,0.26);
+    --ink:     #ECE7DB;          /* bone */
+    --muted:   #9A968C;
+    --faint:   #66635C;
+    --gold:    oklch(0.80 0.10 78);    /* editorial accent — warm */
+    --cyan:    oklch(0.80 0.10 200);   /* data accent — cool */
+    --red:     oklch(0.68 0.16 25);
+    --maxw: 1180px;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Inter',sans-serif; line-height:1.7; font-weight:400;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  .serif{ font-family:'Instrument Serif',serif; font-weight:400; letter-spacing:0.01em; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  a{ color:inherit; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 40px; }
+  @media (max-width:640px){ .wrap{ padding:0 24px; } }
+
+  .label{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
+
+  /* ---- NAV ---- */
+  nav{ position:sticky; top:0; z-index:50; background:rgba(12,12,14,0.8); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--rule); }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:70px; }
+  .brand{ font-family:'Instrument Serif',serif; font-size:1.5rem; letter-spacing:0.01em; white-space:nowrap; }
+  .brand i{ color:var(--gold); }
+  nav ul{ display:flex; gap:34px; list-style:none; font-family:'JetBrains Mono',monospace; font-size:0.74rem; letter-spacing:0.04em; }
+  nav ul a{ text-decoration:none; color:var(--muted); transition:color .2s; }
+  nav ul a:hover{ color:var(--ink); }
+  nav ul .n{ color:var(--faint); margin-right:6px; }
+  @media (max-width:780px){ nav ul{ display:none; } }
+
+  /* ---- HERO ---- */
+  .hero{ padding:96px 0 72px; border-bottom:1px solid var(--rule); }
+  .hero .topline{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:54px; }
+  .hero h1{ font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(3.2rem,9vw,7rem); line-height:0.98; letter-spacing:-0.01em; margin-bottom:40px; }
+  .hero h1 em{ font-style:italic; color:var(--gold); }
+  .hero-body{ display:grid; grid-template-columns:1.5fr 1fr; gap:60px; align-items:end; }
+  .hero-body .lede{ font-size:1.18rem; color:var(--muted); max-width:54ch; }
+  .hero-body .lede strong{ color:var(--ink); font-weight:600; }
+  .hero-actions{ display:flex; flex-direction:column; gap:12px; }
+  .lnk{ display:flex; justify-content:space-between; align-items:center; gap:14px; padding:15px 20px; border:1px solid var(--rule); border-radius:11px; text-decoration:none; font-family:'JetBrains Mono',monospace; font-size:0.82rem; transition:border-color .2s, background .2s; }
+  .lnk:hover{ border-color:var(--rule-2); background:var(--panel); }
+  .lnk.solid{ background:var(--gold); color:#1a1405; border-color:var(--gold); font-weight:500; }
+  .lnk.solid:hover{ filter:brightness(1.06); }
+  .lnk .ar{ opacity:.6; }
+  @media (max-width:880px){ .hero-body{ grid-template-columns:1fr; gap:36px; align-items:start; } }
+
+  /* ---- SECTION SCAFFOLD ---- */
+  section{ padding:84px 0; border-bottom:1px solid var(--rule); }
+  .shead{ display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:baseline; margin-bottom:48px; }
+  .shead .num{ font-family:'Instrument Serif',serif; font-size:2.6rem; color:var(--faint); line-height:1; }
+  .shead h2{ font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(2rem,4.6vw,3.2rem); line-height:1.05; }
+  .shead .lbl{ display:block; margin-bottom:8px; }
+
+  .reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+  /* ---- ABOUT ---- */
+  .about{ display:grid; grid-template-columns:1.6fr 1fr; gap:64px; }
+  .about .body p{ color:var(--muted); margin-bottom:20px; max-width:62ch; font-size:1.04rem; }
+  .about .body p strong{ color:var(--ink); font-weight:600; }
+  .about .body p:first-child::first-letter{ font-family:'Instrument Serif',serif; font-size:3.4rem; line-height:0.8; float:left; padding:6px 12px 0 0; color:var(--gold); }
+  .ledger{ border-top:1px solid var(--rule-2); }
+  .ledger div{ display:flex; justify-content:space-between; gap:16px; padding:14px 0; border-bottom:1px solid var(--rule); font-family:'JetBrains Mono',monospace; font-size:0.8rem; }
+  .ledger .k{ color:var(--faint); text-transform:uppercase; letter-spacing:0.08em; font-size:0.68rem; }
+  .ledger .v{ color:var(--ink); text-align:right; }
+  @media (max-width:880px){ .about{ grid-template-columns:1fr; gap:36px; } }
+
+  /* ---- RESEARCH ---- */
+  .rwrap{ border:1px solid var(--rule); border-radius:16px; background:var(--panel); overflow:hidden; }
+  .rhead{ padding:38px 40px; border-bottom:1px solid var(--rule); }
+  .rhead .tag{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--gold); letter-spacing:0.06em; }
+  .rhead h3{ font-family:'Instrument Serif',serif; font-weight:400; font-size:2rem; line-height:1.06; margin:14px 0 12px; max-width:24ch; }
+  .rhead p{ color:var(--muted); max-width:64ch; }
+
+  /* elegant comparison diagram */
+  .compare{ padding:40px; display:grid; gap:30px; }
+  .crow{ display:grid; grid-template-columns:200px 1fr auto; gap:24px; align-items:center; }
+  .crow .clabel{ font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--muted); }
+  .crow .clabel small{ display:block; color:var(--faint); font-size:0.7rem; margin-top:4px; }
+  .track{ height:34px; border-radius:8px; background:var(--panel-2); position:relative; overflow:hidden; }
+  .track > span{ position:absolute; left:0; top:0; bottom:0; border-radius:8px; }
+  .track.bad > span{ width:65%; background:linear-gradient(90deg,var(--red),oklch(0.68 0.16 25 / 0.5)); }
+  .track.good > span{ width:2.2%; min-width:6px; background:var(--cyan); }
+  .crow .cval{ font-family:'Instrument Serif',serif; font-size:2.4rem; line-height:1; min-width:90px; text-align:right; }
+  .crow.bad .cval{ color:var(--red); }
+  .crow.good .cval{ color:var(--cyan); }
+  .compare .delta{ display:flex; justify-content:flex-end; }
+  .delta .chip{ font-family:'JetBrains Mono',monospace; font-size:0.76rem; color:var(--cyan); border:1px solid var(--rule-2); border-radius:999px; padding:7px 16px; }
+  @media (max-width:680px){ .crow{ grid-template-columns:1fr; gap:10px; } .crow .cval{ text-align:left; } }
+
+  .rfoot{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--rule); }
+  .rfoot .rf{ padding:24px 28px; border-right:1px solid var(--rule); }
+  .rfoot .rf:last-child{ border-right:none; }
+  .rfoot .rfv{ font-family:'Instrument Serif',serif; font-size:1.7rem; line-height:1; }
+  .rfoot .rfl{ font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--faint); margin-top:9px; }
+  @media (max-width:680px){ .rfoot{ grid-template-columns:repeat(2,1fr); } .rfoot .rf:nth-child(2){ border-right:none; } }
+
+  /* ---- PROJECTS ---- */
+  .proj{ display:grid; grid-template-columns:auto 1fr; gap:30px; padding:38px 0; border-top:1px solid var(--rule); }
+  .proj:first-of-type{ border-top:none; padding-top:0; }
+  .proj .pn{ font-family:'Instrument Serif',serif; font-size:2rem; color:var(--gold); line-height:1; }
+  .proj h3{ font-family:'Instrument Serif',serif; font-weight:400; font-size:1.8rem; line-height:1.08; margin-bottom:6px; }
+  .proj .pmeta{ font-family:'JetBrains Mono',monospace; font-size:0.74rem; color:var(--faint); margin-bottom:18px; }
+  .proj > div > p{ color:var(--muted); margin-bottom:18px; max-width:68ch; }
+  .proj ul{ list-style:none; color:var(--muted); display:grid; gap:9px; margin-bottom:20px; }
+  .proj ul li{ padding-left:24px; position:relative; }
+  .proj ul li::before{ content:"—"; position:absolute; left:0; color:var(--gold); }
+  .tags{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; }
+  .tag{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; border:1px solid var(--rule); border-radius:6px; padding:5px 11px; color:var(--muted); }
+  .plink{ font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--gold); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .2s; }
+  .plink:hover{ border-bottom-color:var(--gold); }
+  @media (max-width:680px){ .proj{ grid-template-columns:1fr; gap:12px; } }
+
+  /* ---- EXPERIENCE ---- */
+  .exp{ display:grid; grid-template-columns:230px 1fr; gap:40px; }
+  .exp .when{ font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--muted); }
+  .exp .when .loc{ display:block; color:var(--faint); margin-top:6px; }
+  .exp h3{ font-family:'Instrument Serif',serif; font-weight:400; font-size:1.7rem; margin-bottom:4px; }
+  .exp .place{ font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--gold); margin-bottom:18px; }
+  .exp ul{ list-style:none; color:var(--muted); display:grid; gap:11px; }
+  .exp ul li{ padding-left:24px; position:relative; }
+  .exp ul li::before{ content:"—"; position:absolute; left:0; color:var(--faint); }
+  @media (max-width:680px){ .exp{ grid-template-columns:1fr; gap:16px; } }
+
+  /* ---- SKILLS ---- */
+  .skills{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 56px; }
+  .skline{ display:grid; grid-template-columns:200px 1fr; gap:20px; padding:22px 0; border-top:1px solid var(--rule); align-items:start; }
+  .skline:nth-child(-n+2){ border-top:none; }
+  .skline h3{ font-family:'JetBrains Mono',monospace; font-weight:500; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--gold); }
+  .skline .tags{ margin-bottom:0; }
+  .skline .tags .tag{ color:var(--ink); }
+  @media (max-width:780px){ .skills{ grid-template-columns:1fr; gap:0; } .skline{ grid-template-columns:1fr; gap:10px; } .skline:nth-child(2){ border-top:1px solid var(--rule); } }
+
+  /* ---- CERTS ---- */
+  .certs{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:0; border-top:1px solid var(--rule); }
+  .cert{ display:flex; justify-content:space-between; gap:14px; padding:20px 4px; border-bottom:1px solid var(--rule); text-decoration:none; transition:padding-left .2s, color .2s; }
+  .cert:hover{ padding-left:12px; }
+  .cert .cn{ font-size:0.96rem; color:var(--ink); }
+  .cert .ci{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--faint); margin-top:4px; }
+  .cert .cy{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--gold); white-space:nowrap; align-self:center; }
+
+  /* ---- CONTACT ---- */
+  footer{ padding:96px 0 56px; }
+  footer .big{ font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(2.8rem,8vw,6rem); line-height:0.98; margin-bottom:28px; }
+  footer .big em{ font-style:italic; color:var(--gold); }
+  footer .sub{ color:var(--muted); max-width:50ch; margin-bottom:44px; font-size:1.06rem; }
+  .contacts{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--rule-2); border-bottom:1px solid var(--rule); }
+  .cc{ padding:24px 4px; text-decoration:none; transition:padding-left .2s; }
+  .cc:hover{ padding-left:10px; }
+  .cc .ccl{ font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--faint); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+  .cc .ccv{ font-size:0.92rem; word-break:break-word; }
+  @media (max-width:780px){ .contacts{ grid-template-columns:repeat(2,1fr); } }
+  .foot-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:32px; font-family:'JetBrains Mono',monospace; font-size:0.74rem; color:var(--faint); }
+  .status{ display:flex; align-items:center; gap:9px; color:var(--muted); }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--gold); display:inline-block; }
+  @media (prefers-reduced-motion:no-preference){ .dot{ animation:pulse 2.4s infinite; } }
+  @keyframes pulse{ 0%{ box-shadow:0 0 0 0 oklch(0.80 0.10 78 / 0.4);} 70%{ box-shadow:0 0 0 9px transparent;} 100%{ box-shadow:0 0 0 0 transparent;} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Aarnav <i>Singh</i></div>
+    <ul>
+      <li><a href="#research"><span class="n">01</span>Research</a></li>
+      <li><a href="#projects"><span class="n">02</span>Projects</a></li>
+      <li><a href="#experience"><span class="n">03</span>Experience</a></li>
+      <li><a href="#contact"><span class="n">04</span>Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" data-screen-label="hero">
+  <div class="wrap">
+    <div class="topline">
+      <span class="label">Security Research · Dossier</span>
+      <span class="label">SRM Inst. of Science &amp; Technology · 2026</span>
+    </div>
+    <h1>Defenses that hold when<br>the model is <em>fooled</em>.</h1>
+    <div class="hero-body">
+      <p class="lede">
+        I'm <strong>Aarnav Singh</strong> — a final-year B.Tech CSE (Cybersecurity) student researching how
+        <strong>Zero-Trust contextual policy</strong> can absorb adversarial machine-learning attacks, and
+        building the security tooling around that research.
+      </p>
+      <div class="hero-actions">
+        <a class="lnk solid" href="#projects"><span>Read the work</span><span class="ar">↓</span></a>
+        <a class="lnk" href="resume.pdf" download><span>Download résumé</span><span class="ar">PDF</span></a>
+        <a class="lnk" href="https://github.com/Aarnav-Singh" target="_blank" rel="noopener"><span>GitHub</span><span class="ar">↗</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="num">01</span>
+      <div><span class="label lbl">About</span><h2>Security that assumes the model will be wrong.</h2></div>
+    </div>
+    <div class="about">
+      <div class="body">
+        <p>I got into security through an internship at <strong>HCLTech</strong>, working across enterprise
+          network security, Microsoft Azure infrastructure, and DevSecOps automation in Python. That raised a
+          question that's stuck with me: as detection leans harder on machine learning, what happens when an
+          attacker learns to fool the model itself?</p>
+        <p>My major project answers that for <strong>Zero-Trust network architectures</strong>. I built a
+          six-layer system pairing an ML intrusion-detection classifier with a context-aware policy engine,
+          then attacked it with domain-constrained <strong>FGSM and PGD</strong> methods — and measured how much
+          Zero-Trust context could compensate, with no model retraining at all.</p>
+        <p>Alongside the research I built an applied counterpart — a full-stack
+          <strong>Hybrid Behavioral Intrusion Detection System</strong> with a real-time dashboard, closer to
+          a production SOC tool.</p>
+      </div>
+      <div class="ledger">
+        <div><span class="k">Degree</span><span class="v">B.Tech CSE · Cybersecurity</span></div>
+        <div><span class="k">Institute</span><span class="v">SRM Inst. Science &amp; Tech</span></div>
+        <div><span class="k">Graduating</span><span class="v">2026</span></div>
+        <div><span class="k">Internship</span><span class="v">HCLTech · 2024</span></div>
+        <div><span class="k">Paper</span><span class="v">Under review · JISA</span></div>
+        <div><span class="k">Focus</span><span class="v">Zero-Trust · Adversarial ML</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="num">02</span>
+      <div><span class="label lbl">Research highlight</span><h2>Zero-Trust context absorbs adversarial evasion.</h2></div>
+    </div>
+    <div class="rwrap">
+      <div class="rhead">
+        <span class="tag">● Under review · JISA, Elsevier · Scopus Q1 · IF 3.7</span>
+        <h3>Adversarial Attack Detection in Zero-Trust Networks</h3>
+        <p>A six-layer Python/PyTorch system showing that Zero-Trust contextual policy can absorb the damage
+          of successful FGSM/PGD evasion against an ML intrusion-detection classifier — without retraining.</p>
+      </div>
+      <div class="compare">
+        <div class="crow bad">
+          <div class="clabel">ML classifier alone<small>under adversarial evasion</small></div>
+          <div class="track bad"><span></span></div>
+          <div class="cval">65%</div>
+        </div>
+        <div class="crow good">
+          <div class="clabel">+ Zero-Trust context<small>device · geo · identity · time</small></div>
+          <div class="track good"><span></span></div>
+          <div class="cval">2.2%</div>
+        </div>
+        <div class="delta"><span class="chip">↓ 96.7% fewer bypasses · zero retraining</span></div>
+      </div>
+      <div class="rfoot">
+        <div class="rf"><div class="rfv">90.7%</div><div class="rfl">UNSW-NB15 accuracy</div></div>
+        <div class="rf"><div class="rfv">99.9%</div><div class="rfl">CICIDS-2017 accuracy</div></div>
+        <div class="rf"><div class="rfv">5 seeds</div><div class="rfl">averaged for robustness</div></div>
+        <div class="rf"><div class="rfv">FGSM / PGD</div><div class="rfl">domain-constrained</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="num">03</span>
+      <div><span class="label lbl">Selected work</span><h2>Built, attacked, and measured.</h2></div>
+    </div>
+
+    <div class="proj">
+      <span class="pn">i</span>
+      <div>
+        <h3>Adversarial Attack Detection in Zero-Trust Networks</h3>
+        <div class="pmeta">Jan 2026 · Research system</div>
+        <p>A six-layer Zero-Trust security system combining an ML intrusion-detection classifier with a
+          context-aware policy engine, stress-tested against domain-constrained adversarial attacks.</p>
+        <ul>
+          <li>Trained classifiers on UNSW-NB15 and CICIDS-2017 — 90.7% and 99.9% accuracy across 5 seeds.</li>
+          <li>Implemented domain-constrained FGSM/PGD evasion attacks against the trained classifiers.</li>
+          <li>Reduced Zero-Trust bypass rates from 65% to 2.2% using contextual signals — with zero retraining.</li>
+          <li>Co-authored a resulting paper, under review at JISA (Elsevier, Scopus Q1, IF 3.7).</li>
+        </ul>
+        <div class="tags"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">Adversarial ML</span><span class="tag">Zero-Trust</span><span class="tag">UNSW-NB15</span><span class="tag">CICIDS-2017</span></div>
+        <a class="plink" href="https://github.com/Aarnav-Singh/adversarial-ml-security-framework" target="_blank" rel="noopener">View repository ↗</a>
+      </div>
+    </div>
+
+    <div class="proj">
+      <span class="pn">ii</span>
+      <div>
+        <h3>Hybrid Behavioral Intrusion Detection System</h3>
+        <div class="pmeta">Feb 2026 · Full-stack tool</div>
+        <p>A full-stack IDS combining rule-based detection with Isolation-Forest anomaly detection, paired with
+          a real-time monitoring dashboard.</p>
+        <ul>
+          <li>Built a real-time React dashboard over WebSockets and REST APIs for live threat visualization.</li>
+          <li>Integrated Elasticsearch for centralized log indexing and threat-event correlation.</li>
+          <li>Deployed Prometheus to monitor detection latency and system performance.</li>
+          <li>Containerized the full system with Docker to simulate a scalable, Zero-Trust-aligned deployment.</li>
+        </ul>
+        <div class="tags"><span class="tag">React</span><span class="tag">Isolation Forest</span><span class="tag">Elasticsearch</span><span class="tag">Prometheus</span><span class="tag">Docker</span><span class="tag">WebSockets</span></div>
+        <a class="plink" href="https://github.com/Aarnav-Singh/Hybrid-Behavioral-Intrusion-Detection-System" target="_blank" rel="noopener">View repository ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="num">04</span>
+      <div><span class="label lbl">Experience</span><h2>Where it started.</h2></div>
+    </div>
+    <div class="exp">
+      <div class="when">May 2024 — Jul 2024<span class="loc">Noida, India</span></div>
+      <div>
+        <h3>HCLTech — Intern</h3>
+        <div class="place">Network &amp; Security</div>
+        <ul>
+          <li>Built foundations in enterprise network and perimeter security — firewalls, segmentation, and threat-mitigation strategy.</li>
+          <li>Gained hands-on understanding of Microsoft Azure infrastructure while supporting security operations.</li>
+          <li>Applied Python for DevSecOps automation — security-tooling configuration and codebase review.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="num">05</span>
+      <div><span class="label lbl">Capabilities</span><h2>Toolkit.</h2></div>
+    </div>
+    <div class="skills">
+      <div class="skline"><h3>Security &amp; Monitoring</h3><div class="tags"><span class="tag">IDS/IPS</span><span class="tag">SIEM</span><span class="tag">SOAR</span><span class="tag">Log Analysis</span><span class="tag">Incident Response</span><span class="tag">Threat Intel</span><span class="tag">MITRE ATT&amp;CK</span><span class="tag">Vuln Assessment</span></div></div>
+      <div class="skline"><h3>Machine Learning</h3><div class="tags"><span class="tag">Adversarial ML</span><span class="tag">Anomaly Detection</span><span class="tag">Isolation Forest</span><span class="tag">Feature Engineering</span><span class="tag">ROC Curve</span><span class="tag">Confusion Matrix</span></div></div>
+      <div class="skline"><h3>Networking &amp; Zero-Trust</h3><div class="tags"><span class="tag">TCP/IP</span><span class="tag">DNS</span><span class="tag">VPN</span><span class="tag">Segmentation</span><span class="tag">Firewalls</span><span class="tag">ZTNA</span><span class="tag">SASE</span><span class="tag">SD-WAN</span><span class="tag">NAC</span></div></div>
+      <div class="skline"><h3>Tools &amp; Platforms</h3><div class="tags"><span class="tag">Elasticsearch</span><span class="tag">Prometheus</span><span class="tag">Wireshark</span><span class="tag">Nmap</span><span class="tag">Nessus</span><span class="tag">Metasploit</span><span class="tag">FortiGate</span><span class="tag">Kali</span><span class="tag">WAF</span></div></div>
+      <div class="skline"><h3>Cloud &amp; Development</h3><div class="tags"><span class="tag">Azure</span><span class="tag">AWS</span><span class="tag">IAM</span><span class="tag">DevSecOps</span><span class="tag">Linux</span><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">Docker</span><span class="tag">React.js</span><span class="tag">REST</span></div></div>
+      <div class="skline"><h3>Certifications</h3><div class="tags"><span class="tag">ISC2 CC</span><span class="tag">Fortinet FCA</span><span class="tag">Fortinet FCF</span><span class="tag">NPTEL ACN</span><span class="tag">Deloitte (Forage)</span></div></div>
+    </div>
+
+    <div class="certs" style="margin-top:48px;">
+      <a class="cert" href="https://isc2.obrizum.io/org/cc/certificate/c1f4bb67-62dd-4e7f-a119-c1788c8db093" target="_blank" rel="noopener"><div><div class="cn">Certified in Cybersecurity (CC)</div><div class="ci">ISC2</div></div><div class="cy">2026 – 2029</div></a>
+      <a class="cert" href="https://training.fortinet.com/pluginfile.php/1/tool_certificate/issues/1755870312/3491960257AS.pdf" target="_blank" rel="noopener"><div><div class="cn">Fortinet Certified Associate — Cybersecurity</div><div class="ci">Fortinet</div></div><div class="cy">2025 – 2027</div></a>
+      <a class="cert" href="https://training.fortinet.com/pluginfile.php/1/tool_certificate/issues/1754573421/4308715961AS.pdf" target="_blank" rel="noopener"><div><div class="cn">Fortinet Certified Fundamentals — Cybersecurity</div><div class="ci">Fortinet</div></div><div class="cy">2025 – 2027</div></a>
+      <a class="cert" href="https://archive.nptel.ac.in/content/noc/NOC25/SEM1/Ecertificates/106/noc25-cs02/Course/NPTEL25CS02S65390092604197983.pdf" target="_blank" rel="noopener"><div><div class="cn">Advanced Computer Networks</div><div class="ci">NPTEL</div></div><div class="cy">Apr 2025</div></a>
+      <span class="cert"><div><div class="cn">Cyber Job Simulation</div><div class="ci">Deloitte Australia · Forage</div></div><div class="cy">Jun 2025</div></span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <div class="wrap reveal">
+    <span class="label">06 · Contact</span>
+    <div class="big" style="margin-top:18px;">Let's talk <em>security</em>.</div>
+    <p class="sub">Open to cybersecurity engineering and applied ML security internships and full-time roles.
+      Reach out — I usually reply within a day.</p>
+    <div class="contacts">
+      <a class="cc" href="/cdn-cgi/l/email-protection#67060615090611120d0d0e27000a060e0b4904080a"><div class="ccl">Email</div><div class="ccv"><span class="__cf_email__" data-cfemail="325353405c53444758585b72555f535b5e1c515d5f">[email&#160;protected]</span></div></a>
+      <a class="cc" href="tel:+919971506703"><div class="ccl">Phone</div><div class="ccv">+91 9971506703</div></a>
+      <a class="cc" href="https://www.linkedin.com/in/aarnav-singh-bb6076251/" target="_blank" rel="noopener"><div class="ccl">LinkedIn</div><div class="ccv">aarnav-singh</div></a>
+      <a class="cc" href="https://github.com/Aarnav-Singh" target="_blank" rel="noopener"><div class="ccl">GitHub</div><div class="ccv">Aarnav-Singh</div></a>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Aarnav Singh</span>
+      <span class="status"><span class="dot"></span> Available for opportunities</span>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((ents)=>{ ents.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, { threshold:0.08 });
+    els.forEach(el=>io.observe(el));
+  } else { els.forEach(el=>el.classList.add('in')); }
+</script>
+</body>
+</html>

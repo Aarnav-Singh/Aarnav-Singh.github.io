@@ -34,20 +34,17 @@
   a{ color:inherit; }
   .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 40px; }
   @media (max-width:640px){ .wrap{ padding:0 24px; } }
-
   .label{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
-
   /* ---- NAV ---- */
   nav{ position:sticky; top:0; z-index:50; background:rgba(12,12,14,0.8); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--rule); }
   nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:70px; }
   .brand{ font-family:'Instrument Serif',serif; font-size:1.5rem; letter-spacing:0.01em; white-space:nowrap; }
   .brand i{ color:var(--gold); }
-  nav ul{ display:flex; gap:34px; list-style:none; font-family:'JetBrains Mono',monospace; font-size:0.74rem; letter-spacing:0.04em; }
+  nav ul{ display:flex; gap:28px; list-style:none; font-family:'JetBrains Mono',monospace; font-size:0.74rem; letter-spacing:0.04em; }
   nav ul a{ text-decoration:none; color:var(--muted); transition:color .2s; }
   nav ul a:hover{ color:var(--ink); }
   nav ul .n{ color:var(--faint); margin-right:6px; }
   @media (max-width:780px){ nav ul{ display:none; } }
-
   /* ---- HERO ---- */
   .hero{ padding:96px 0 72px; border-bottom:1px solid var(--rule); }
   .hero .topline{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:54px; }
@@ -63,18 +60,15 @@
   .lnk.solid:hover{ filter:brightness(1.06); }
   .lnk .ar{ opacity:.6; }
   @media (max-width:880px){ .hero-body{ grid-template-columns:1fr; gap:36px; align-items:start; } }
-
   /* ---- SECTION SCAFFOLD ---- */
   section{ padding:84px 0; border-bottom:1px solid var(--rule); }
   .shead{ display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:baseline; margin-bottom:48px; }
   .shead .num{ font-family:'Instrument Serif',serif; font-size:2.6rem; color:var(--faint); line-height:1; }
   .shead h2{ font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(2rem,4.6vw,3.2rem); line-height:1.05; }
   .shead .lbl{ display:block; margin-bottom:8px; }
-
   .reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.in{ opacity:1; transform:none; }
   @media (prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
-
   /* ---- ABOUT ---- */
   .about{ display:grid; grid-template-columns:1.6fr 1fr; gap:64px; }
   .about .body p{ color:var(--muted); margin-bottom:20px; max-width:62ch; font-size:1.04rem; }
@@ -85,14 +79,12 @@
   .ledger .k{ color:var(--faint); text-transform:uppercase; letter-spacing:0.08em; font-size:0.68rem; }
   .ledger .v{ color:var(--ink); text-align:right; }
   @media (max-width:880px){ .about{ grid-template-columns:1fr; gap:36px; } }
-
   /* ---- RESEARCH ---- */
   .rwrap{ border:1px solid var(--rule); border-radius:16px; background:var(--panel); overflow:hidden; }
   .rhead{ padding:38px 40px; border-bottom:1px solid var(--rule); }
   .rhead .tag{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--gold); letter-spacing:0.06em; }
   .rhead h3{ font-family:'Instrument Serif',serif; font-weight:400; font-size:2rem; line-height:1.06; margin:14px 0 12px; max-width:24ch; }
   .rhead p{ color:var(--muted); max-width:64ch; }
-
   /* elegant comparison diagram */
   .compare{ padding:40px; display:grid; gap:30px; }
   .crow{ display:grid; grid-template-columns:200px 1fr auto; gap:24px; align-items:center; }
@@ -108,14 +100,12 @@
   .compare .delta{ display:flex; justify-content:flex-end; }
   .delta .chip{ font-family:'JetBrains Mono',monospace; font-size:0.76rem; color:var(--cyan); border:1px solid var(--rule-2); border-radius:999px; padding:7px 16px; }
   @media (max-width:680px){ .crow{ grid-template-columns:1fr; gap:10px; } .crow .cval{ text-align:left; } }
-
   .rfoot{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--rule); }
   .rfoot .rf{ padding:24px 28px; border-right:1px solid var(--rule); }
   .rfoot .rf:last-child{ border-right:none; }
   .rfoot .rfv{ font-family:'Instrument Serif',serif; font-size:1.7rem; line-height:1; }
   .rfoot .rfl{ font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--faint); margin-top:9px; }
   @media (max-width:680px){ .rfoot{ grid-template-columns:repeat(2,1fr); } .rfoot .rf:nth-child(2){ border-right:none; } }
-
   /* ---- PROJECTS ---- */
   .proj{ display:grid; grid-template-columns:auto 1fr; gap:30px; padding:38px 0; border-top:1px solid var(--rule); }
   .proj:first-of-type{ border-top:none; padding-top:0; }
@@ -131,18 +121,18 @@
   .plink{ font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--gold); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .2s; }
   .plink:hover{ border-bottom-color:var(--gold); }
   @media (max-width:680px){ .proj{ grid-template-columns:1fr; gap:12px; } }
-
   /* ---- EXPERIENCE ---- */
   .exp{ display:grid; grid-template-columns:230px 1fr; gap:40px; }
+  .exp + .exp{ margin-top:48px; padding-top:48px; border-top:1px solid var(--rule); }
   .exp .when{ font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--muted); }
   .exp .when .loc{ display:block; color:var(--faint); margin-top:6px; }
+  .exp .when .tag-current{ display:inline-block; margin-top:10px; font-size:0.68rem; color:var(--gold); border:1px solid var(--rule-2); border-radius:999px; padding:4px 10px; letter-spacing:0.06em; }
   .exp h3{ font-family:'Instrument Serif',serif; font-weight:400; font-size:1.7rem; margin-bottom:4px; }
   .exp .place{ font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--gold); margin-bottom:18px; }
   .exp ul{ list-style:none; color:var(--muted); display:grid; gap:11px; }
   .exp ul li{ padding-left:24px; position:relative; }
   .exp ul li::before{ content:"—"; position:absolute; left:0; color:var(--faint); }
   @media (max-width:680px){ .exp{ grid-template-columns:1fr; gap:16px; } }
-
   /* ---- SKILLS ---- */
   .skills{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 56px; }
   .skline{ display:grid; grid-template-columns:200px 1fr; gap:20px; padding:22px 0; border-top:1px solid var(--rule); align-items:start; }
@@ -151,7 +141,6 @@
   .skline .tags{ margin-bottom:0; }
   .skline .tags .tag{ color:var(--ink); }
   @media (max-width:780px){ .skills{ grid-template-columns:1fr; gap:0; } .skline{ grid-template-columns:1fr; gap:10px; } .skline:nth-child(2){ border-top:1px solid var(--rule); } }
-
   /* ---- CERTS ---- */
   .certs{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:0; border-top:1px solid var(--rule); }
   .cert{ display:flex; justify-content:space-between; gap:14px; padding:20px 4px; border-bottom:1px solid var(--rule); text-decoration:none; transition:padding-left .2s, color .2s; }
@@ -159,7 +148,6 @@
   .cert .cn{ font-size:0.96rem; color:var(--ink); }
   .cert .ci{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--faint); margin-top:4px; }
   .cert .cy{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--gold); white-space:nowrap; align-self:center; }
-
   /* ---- CONTACT ---- */
   footer{ padding:96px 0 56px; }
   footer .big{ font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(2.8rem,8vw,6rem); line-height:0.98; margin-bottom:28px; }
@@ -179,31 +167,31 @@
 </style>
 </head>
 <body>
-
 <nav>
   <div class="wrap">
     <div class="brand">Aarnav <i>Singh</i></div>
     <ul>
-      <li><a href="#research"><span class="n">01</span>Research</a></li>
-      <li><a href="#projects"><span class="n">02</span>Projects</a></li>
-      <li><a href="#experience"><span class="n">03</span>Experience</a></li>
-      <li><a href="#contact"><span class="n">04</span>Contact</a></li>
+      <li><a href="#about"><span class="n">01</span>About</a></li>
+      <li><a href="#research"><span class="n">02</span>Research</a></li>
+      <li><a href="#projects"><span class="n">03</span>Projects</a></li>
+      <li><a href="#experience"><span class="n">04</span>Experience</a></li>
+      <li><a href="#skills"><span class="n">05</span>Skills</a></li>
+      <li><a href="#contact"><span class="n">06</span>Contact</a></li>
     </ul>
   </div>
 </nav>
-
 <header class="hero" data-screen-label="hero">
   <div class="wrap">
     <div class="topline">
       <span class="label">Security Research · Dossier</span>
-      <span class="label">SRM Inst. of Science &amp; Technology · 2026</span>
+      <span class="label">HCLTech · Graduate Trainee · 2026</span>
     </div>
     <h1>Defenses that hold when<br>the model is <em>fooled</em>.</h1>
     <div class="hero-body">
       <p class="lede">
-        I'm <strong>Aarnav Singh</strong> — a final-year B.Tech CSE (Cybersecurity) student researching how
-        <strong>Zero-Trust contextual policy</strong> can absorb adversarial machine-learning attacks, and
-        building the security tooling around that research.
+        I'm <strong>Aarnav Singh</strong> — a Graduate Trainee at <strong>HCLTech</strong> and B.Tech CSE (Cybersecurity)
+        graduate researching how <strong>Zero-Trust contextual policy</strong> can absorb adversarial machine-learning
+        attacks, and building the security tooling around that research.
       </p>
       <div class="hero-actions">
         <a class="lnk solid" href="#projects"><span>Read the work</span><span class="ar">↓</span></a>
@@ -213,7 +201,6 @@
     </div>
   </div>
 </header>
-
 <!-- ABOUT -->
 <section id="about">
   <div class="wrap reveal">
@@ -234,19 +221,21 @@
         <p>Alongside the research I built an applied counterpart — a full-stack
           <strong>Hybrid Behavioral Intrusion Detection System</strong> with a real-time dashboard, closer to
           a production SOC tool.</p>
+        <p>I've since graduated and rejoined <strong>HCLTech as a Graduate Trainee</strong>, training across AWS,
+          Azure, GCP, and OCI, Linux administration, and DevOps/SRE tooling — while continuing to build and
+          publish security research on the side.</p>
       </div>
       <div class="ledger">
         <div><span class="k">Degree</span><span class="v">B.Tech CSE · Cybersecurity</span></div>
         <div><span class="k">Institute</span><span class="v">SRM Inst. Science &amp; Tech</span></div>
-        <div><span class="k">Graduating</span><span class="v">2026</span></div>
-        <div><span class="k">Internship</span><span class="v">HCLTech · 2024</span></div>
+        <div><span class="k">Graduated</span><span class="v">2026</span></div>
+        <div><span class="k">Now</span><span class="v">Graduate Trainee · HCLTech</span></div>
         <div><span class="k">Paper</span><span class="v">Under review · JISA</span></div>
         <div><span class="k">Focus</span><span class="v">Zero-Trust · Adversarial ML</span></div>
       </div>
     </div>
   </div>
 </section>
-
 <!-- RESEARCH -->
 <section id="research">
   <div class="wrap reveal">
@@ -283,7 +272,6 @@
     </div>
   </div>
 </section>
-
 <!-- PROJECTS -->
 <section id="projects">
   <div class="wrap reveal">
@@ -291,7 +279,6 @@
       <span class="num">03</span>
       <div><span class="label lbl">Selected work</span><h2>Built, attacked, and measured.</h2></div>
     </div>
-
     <div class="proj">
       <span class="pn">i</span>
       <div>
@@ -309,7 +296,6 @@
         <a class="plink" href="https://github.com/Aarnav-Singh/adversarial-ml-security-framework" target="_blank" rel="noopener">View repository ↗</a>
       </div>
     </div>
-
     <div class="proj">
       <span class="pn">ii</span>
       <div>
@@ -329,13 +315,23 @@
     </div>
   </div>
 </section>
-
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="wrap reveal">
     <div class="shead">
       <span class="num">04</span>
-      <div><span class="label lbl">Experience</span><h2>Where it started.</h2></div>
+      <div><span class="label lbl">Experience</span><h2>Where it started — and where it's headed.</h2></div>
+    </div>
+    <div class="exp">
+      <div class="when">Aug 2026 — Present<span class="loc">Noida, India</span><span class="tag-current">● Current</span></div>
+      <div>
+        <h3>HCLTech — Graduate Trainee</h3>
+        <div class="place">Cloud, Networking &amp; SRE</div>
+        <ul>
+          <li>Completing a structured pre-joining training program spanning AWS, Azure, GCP, and OCI — plus networking, Linux administration, and DevOps/SRE practices (Terraform, Grafana, Prometheus, ITIL 4).</li>
+          <li>Passed HCLTech's proctored pre-joining assessment, validating readiness across enterprise IT, cloud, and security fundamentals.</li>
+        </ul>
+      </div>
     </div>
     <div class="exp">
       <div class="when">May 2024 — Jul 2024<span class="loc">Noida, India</span></div>
@@ -351,7 +347,6 @@
     </div>
   </div>
 </section>
-
 <!-- SKILLS -->
 <section id="skills">
   <div class="wrap reveal">
@@ -364,20 +359,21 @@
       <div class="skline"><h3>Machine Learning</h3><div class="tags"><span class="tag">Adversarial ML</span><span class="tag">Anomaly Detection</span><span class="tag">Isolation Forest</span><span class="tag">Feature Engineering</span><span class="tag">ROC Curve</span><span class="tag">Confusion Matrix</span></div></div>
       <div class="skline"><h3>Networking &amp; Zero-Trust</h3><div class="tags"><span class="tag">TCP/IP</span><span class="tag">DNS</span><span class="tag">VPN</span><span class="tag">Segmentation</span><span class="tag">Firewalls</span><span class="tag">ZTNA</span><span class="tag">SASE</span><span class="tag">SD-WAN</span><span class="tag">NAC</span></div></div>
       <div class="skline"><h3>Tools &amp; Platforms</h3><div class="tags"><span class="tag">Elasticsearch</span><span class="tag">Prometheus</span><span class="tag">Wireshark</span><span class="tag">Nmap</span><span class="tag">Nessus</span><span class="tag">Metasploit</span><span class="tag">FortiGate</span><span class="tag">Kali</span><span class="tag">WAF</span></div></div>
-      <div class="skline"><h3>Cloud &amp; Development</h3><div class="tags"><span class="tag">Azure</span><span class="tag">AWS</span><span class="tag">IAM</span><span class="tag">DevSecOps</span><span class="tag">Linux</span><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">Docker</span><span class="tag">React.js</span><span class="tag">REST</span></div></div>
-      <div class="skline"><h3>Certifications</h3><div class="tags"><span class="tag">ISC2 CC</span><span class="tag">Fortinet FCA</span><span class="tag">Fortinet FCF</span><span class="tag">NPTEL ACN</span><span class="tag">Deloitte (Forage)</span></div></div>
+      <div class="skline"><h3>Cloud &amp; Development</h3><div class="tags"><span class="tag">Azure</span><span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">IAM</span><span class="tag">DevSecOps</span><span class="tag">Terraform</span><span class="tag">Grafana</span><span class="tag">ITIL 4</span><span class="tag">Linux</span><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">Docker</span><span class="tag">React.js</span><span class="tag">REST</span></div></div>
+      <div class="skline"><h3>Certifications</h3><div class="tags"><span class="tag">Google Cloud Cybersecurity</span><span class="tag">Fortinet NSE 1–3</span><span class="tag">Cisco Networking Basics</span><span class="tag">Cisco Intro to Cybersecurity</span><span class="tag">NPTEL ACN</span><span class="tag">Deloitte (Forage)</span></div></div>
     </div>
-
     <div class="certs" style="margin-top:48px;">
-      <a class="cert" href="https://isc2.obrizum.io/org/cc/certificate/c1f4bb67-62dd-4e7f-a119-c1788c8db093" target="_blank" rel="noopener"><div><div class="cn">Certified in Cybersecurity (CC)</div><div class="ci">ISC2</div></div><div class="cy">2026 – 2029</div></a>
-      <a class="cert" href="https://training.fortinet.com/pluginfile.php/1/tool_certificate/issues/1755870312/3491960257AS.pdf" target="_blank" rel="noopener"><div><div class="cn">Fortinet Certified Associate — Cybersecurity</div><div class="ci">Fortinet</div></div><div class="cy">2025 – 2027</div></a>
-      <a class="cert" href="https://training.fortinet.com/pluginfile.php/1/tool_certificate/issues/1754573421/4308715961AS.pdf" target="_blank" rel="noopener"><div><div class="cn">Fortinet Certified Fundamentals — Cybersecurity</div><div class="ci">Fortinet</div></div><div class="cy">2025 – 2027</div></a>
+      <span class="cert"><div><div class="cn">Google Cloud Cybersecurity Certificate</div><div class="ci">Google</div></div><div class="cy">Aug 2026</div></span>
+      <a class="cert" href="https://training.fortinet.com" target="_blank" rel="noopener"><div><div class="cn">Fortinet NSE 3 — Certified in Cybersecurity</div><div class="ci">Fortinet · ID 7222726221AS</div></div><div class="cy">2025 – 2027</div></a>
+      <a class="cert" href="https://training.fortinet.com" target="_blank" rel="noopener"><div><div class="cn">Fortinet NSE 2 — Certified in Cybersecurity</div><div class="ci">Fortinet · ID 7087617973AS</div></div><div class="cy">2025 – 2027</div></a>
+      <a class="cert" href="https://training.fortinet.com" target="_blank" rel="noopener"><div><div class="cn">Fortinet NSE 1 — Certified in Cybersecurity</div><div class="ci">Fortinet · ID 8604292789AS</div></div><div class="cy">2025 – 2027</div></a>
+      <span class="cert"><div><div class="cn">Networking Basics</div><div class="ci">Cisco</div></div><div class="cy">Aug 2025</div></span>
+      <span class="cert"><div><div class="cn">Introduction to Cybersecurity</div><div class="ci">Cisco</div></div><div class="cy">Aug 2025</div></span>
       <a class="cert" href="https://archive.nptel.ac.in/content/noc/NOC25/SEM1/Ecertificates/106/noc25-cs02/Course/NPTEL25CS02S65390092604197983.pdf" target="_blank" rel="noopener"><div><div class="cn">Advanced Computer Networks</div><div class="ci">NPTEL</div></div><div class="cy">Apr 2025</div></a>
       <span class="cert"><div><div class="cn">Cyber Job Simulation</div><div class="ci">Deloitte Australia · Forage</div></div><div class="cy">Jun 2025</div></span>
     </div>
   </div>
 </section>
-
 <!-- CONTACT -->
 <footer id="contact">
   <div class="wrap reveal">
@@ -386,7 +382,7 @@
     <p class="sub">Open to cybersecurity engineering and applied ML security internships and full-time roles.
       Reach out — I usually reply within a day.</p>
     <div class="contacts">
-      <a class="cc" href="aarnavujji@gmail.com"><div class="ccl">Email</div><div class="ccv">aarnavujji@gmail.com</div></a>
+      <a class="cc" href="mailto:aarnavujji@gmail.com"><div class="ccl">Email</div><div class="ccv">aarnavujji@gmail.com</div></a>
       <a class="cc" href="tel:+919971506703"><div class="ccl">Phone</div><div class="ccv">+91 9971506703</div></a>
       <a class="cc" href="https://www.linkedin.com/in/aarnav-singh-bb6076251/" target="_blank" rel="noopener"><div class="ccl">LinkedIn</div><div class="ccv">aarnav-singh</div></a>
       <a class="cc" href="https://github.com/Aarnav-Singh" target="_blank" rel="noopener"><div class="ccl">GitHub</div><div class="ccv">Aarnav-Singh</div></a>
@@ -397,7 +393,6 @@
     </div>
   </div>
 </footer>
-
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const els = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window){
